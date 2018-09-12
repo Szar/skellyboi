@@ -5,6 +5,7 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, \
 	close_room, rooms, disconnect
 import pyaudio, os, math, audioop, time
 from collections import deque
+from pyfiglet import Figlet
 
 """ THRESHOLD: Modify this to adjust minimum level to initiate animation """
 THRESHOLD = 3000
@@ -25,7 +26,8 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 thread_lock = Lock()
-
+fig = Figlet(font='small')
+print(fig.renderText('SKELLYBOI'))
 def background_thread():
 	p = pyaudio.PyAudio()
 	stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK)
@@ -34,6 +36,7 @@ def background_thread():
 	slid_win = deque(maxlen=SILENCE_LIMIT * rel)
 	avg_count = 4
 	ts = time.time()
+    
 	while True:
 		cur_data = stream.read(CHUNK)
 		slid_win.append(math.sqrt(abs(audioop.avg(cur_data, avg_count))))
@@ -53,7 +56,6 @@ def index():
 
 @socketio.on('connect', namespace='/skelly')
 def client_connect():
-	print("Connected!")
 	global thread
 	with thread_lock:
 		if thread is None:
@@ -65,4 +67,4 @@ def client_disconnect():
 	print('Client disconnected', request.sid)
 
 if __name__ == '__main__':
-	socketio.run(app) #, debug=True
+	socketio.run(app, debug=False)
