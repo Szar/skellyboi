@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!"C:\Python27\python.exe"
 from threading import Lock
 from flask import Flask, render_template, session, request
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
@@ -8,7 +8,7 @@ from collections import deque
 from pyfiglet import Figlet
 
 """ THRESHOLD: Modify this to adjust minimum level to initiate animation """
-THRESHOLD = 3000
+THRESHOLD = 15000
 
 """ MIN_ANIMATION: Minimum seconds for animation to run """
 MIN_ANIMATION = 0.5
@@ -43,6 +43,7 @@ def background_thread():
 		s = sum([round(x) for x in slid_win])
 		status = None
 		nstatus = 1 if s>THRESHOLD else 0
+		print(s)
 		if nstatus!=status and (nstatus==1 or time.time() - ts >= MIN_ANIMATION):
 			status=nstatus
 			ts = time.time()

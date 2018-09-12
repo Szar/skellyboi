@@ -1,3 +1,4 @@
 Flask
 pyaudio
 flask-socketio
+pyfiglet
