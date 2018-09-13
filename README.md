@@ -1,5 +1,5 @@
 # skellyboi
-----
+
 ## Instructions
 1. Run skellyboi.exe
 2. Enter a threshold amount
