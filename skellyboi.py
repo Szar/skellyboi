@@ -9,8 +9,18 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, \
 	close_room, rooms, disconnect
 import pyaudio, os, math, audioop, time
 from collections import deque
+
+print("""
+  ___ _       _ _      _         _ 
+ / __| |_____| | |_  _| |__  ___(_)
+ \__ \ / / -_) | | || | '_ \/ _ \ |
+ |___/_\_\___|_|_|\_, |_.__/\___/_|
+				  |__/    
+				  """)
+
 """ THRESHOLD: Modify this to adjust minimum level to initiate animation """
-THRESHOLD = 10000
+#THRESHOLD = 10000
+THRESHOLD = int(raw_input("Enter threshold amount. (e.g. 5000)"))
 
 """ MIN_ANIMATION: Minimum seconds for animation to run """
 MIN_ANIMATION = 0.5
@@ -29,13 +39,7 @@ socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 thread_lock = Lock()
 
-print("""
-  ___ _       _ _      _         _ 
- / __| |_____| | |_  _| |__  ___(_)
- \__ \ / / -_) | | || | '_ \/ _ \ |
- |___/_\_\___|_|_|\_, |_.__/\___/_|
-				  |__/    
-				  """)
+
 def background_thread():
 	p = pyaudio.PyAudio()
 	stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK)
@@ -51,6 +55,7 @@ def background_thread():
 		s = sum([round(x) for x in slid_win])
 		status = None
 		nstatus = 1 if s>THRESHOLD else 0
+		print(round(s))
 		if nstatus!=status and (nstatus==1 or time.time() - ts >= MIN_ANIMATION):
 			status=nstatus
 			ts = time.time()
@@ -75,10 +80,12 @@ def client_disconnect():
 	print('Client disconnected', request.sid)
 
 if __name__ == '__main__':
-	try:
-	 	socketio.run(app, debug=True)
+	socketio.run(app, debug=False)
+	"""try:
+		socketio.run(app, debug=False)
+	 	
 	except SystemExit as e:
 		print 'Error!', e
 		print 'Press enter to exit (and fix the problem)'
-		raw_input()
+		raw_input()"""
 	
