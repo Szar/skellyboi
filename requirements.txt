@@ -1,4 +1,6 @@
 Flask
 pyaudio
 flask-socketio
-pyfiglet
+dnspython
+engineio
+gevent

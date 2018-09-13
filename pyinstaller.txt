@@ -1,0 +1,1 @@
+python "C:\Python27\Scripts\pyinstaller-script.py" skellyboi.spec 
