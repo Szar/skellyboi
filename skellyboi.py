@@ -1,8 +1,7 @@
 #!"C:\Python27\python.exe"
-#import gevent
 import threading
 import dns
-from engineio import async_eventlet,async_threading #async_threading, async_gevent
+from engineio import async_eventlet,async_threading
 from threading import Lock
 from flask import Flask, render_template, session, request
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
@@ -19,7 +18,6 @@ print("""
 				  """)
 
 """ THRESHOLD: Modify this to adjust minimum level to initiate animation """
-#THRESHOLD = 10000
 THRESHOLD = int(raw_input("Enter threshold amount. (e.g. 5000)"))
 
 """ MIN_ANIMATION: Minimum seconds for animation to run """
@@ -81,11 +79,3 @@ def client_disconnect():
 
 if __name__ == '__main__':
 	socketio.run(app, debug=False)
-	"""try:
-		socketio.run(app, debug=False)
-	 	
-	except SystemExit as e:
-		print 'Error!', e
-		print 'Press enter to exit (and fix the problem)'
-		raw_input()"""
-	
